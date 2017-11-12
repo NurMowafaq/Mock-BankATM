@@ -32,7 +32,8 @@ public class MoneyTransactions {
 
     //add money to account balance
     public void addDeposite() {
-        checkDeposite();
+        final double deposite = checkDeposite();
+        beanAccount.setBalance(beanAccount.getBalance() + deposite);
         getTotalBalance();
     }
 
@@ -51,7 +52,7 @@ public class MoneyTransactions {
         }
         else if (amount <= beanAccount.getBalance()) {
  
-                for (int counter = 0; counter <= 668; counter++) {
+                for (int counter = 0; counter < 668; counter++) {
 
                         if (amount >= 25000 && Count_OF_25K != 0) {
                             amount = amount - 25000.0;
@@ -99,23 +100,24 @@ public class MoneyTransactions {
         }
     }
     
-    private void checkDeposite() {
+    private double checkDeposite() {
         double deposite = 0.0;
-        System.out.print("Enter the amount you want to deposit : ");
-        final Scanner input = new Scanner(System.in);
-        deposite = input.nextDouble();
 
-        while (deposite == 0.0) {
-            
-            System.err.println("Deposite cannot be zero!");
+        do {
+            System.out.print("Enter the amount you want to deposit : ");
+            final Scanner input = new Scanner(System.in);
             deposite = input.nextDouble();
-            if (deposite != 0.0) {
-                break;
+            
+            if (deposite == 0.0) {
+                System.err.println("Deposite cannot be zero!");
+                continue;
             }
-        }
-
-        beanAccount.setBalance(beanAccount.getBalance() + deposite);
-
+            else if(deposite < 500) {
+                System.err.println("Amount cannot be less than 500!");
+                continue;
+            }
+        } while (deposite < 500);
+        return deposite;
     }
     
     private static double getAmountForWithdraw() {
@@ -130,15 +132,6 @@ public class MoneyTransactions {
             System.err.println("Minimum amount is 500 IRQ DNR !!");
         } while (true);
         return amount;
-    }
-    
-    public static boolean askUserForContinue() {
-        System.out.println("Do you want to continue ? yes(YES) or no(NO) = ");
-        String answer = input.next();
-        if(answer.equalsIgnoreCase("yes")) {
-            return true;
-        }
-        return false;
     }
     
     public void showAccountDetail() {
